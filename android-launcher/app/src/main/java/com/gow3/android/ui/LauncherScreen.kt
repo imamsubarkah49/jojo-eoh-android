@@ -219,9 +219,10 @@ private fun BottomNavigation(selectedTab: LauncherTab, onTabSelected: (LauncherT
                 .padding(4.dp),
             horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
+            // Simple layout: Home / Settings / Info(logs). Patches/Mods stay out
+            // of the main flow; JoJo needs a game folder and Play, not a mod UI.
             NavItem(LauncherTab.HOME, selectedTab == LauncherTab.HOME, stringResource(R.string.nav_home), "⌂", onTabSelected)
             NavItem(LauncherTab.SETTINGS, selectedTab == LauncherTab.SETTINGS, stringResource(R.string.nav_settings), "⚙", onTabSelected)
-            NavItem(LauncherTab.MODS, selectedTab == LauncherTab.MODS, stringResource(R.string.nav_mods), "☰", onTabSelected)
             NavItem(LauncherTab.ABOUT, selectedTab == LauncherTab.ABOUT, stringResource(R.string.nav_about), "ⓘ", onTabSelected)
         }
     }
