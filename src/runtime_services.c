@@ -6,6 +6,7 @@
  * Every entry here is an explicit contract; unknown functions still stop. */
 #define _GNU_SOURCE
 #include "runtime.h"
+#include "guest_cpu.h"
 #include "gpu/gow3gpu.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -118,13 +119,52 @@ static ABI int32_t disable_music_player(void) { return 0; }
 static ABI int32_t launch_browser(void) { note("SystemService: web browser request ignored (offline)"); return 0; }
 
 /* ---- libSceIme keyboard ---- */
-/* No Android IME surface is wired into sceImeKeyboardOpen yet. Report
- * NOT_OPENED so the game can fall back to a default profile name instead of
- * waiting forever for a keyboard event that will never arrive. */
-static ABI int32_t ime_keyboard_open(uint32_t user,const void *param) {
-    (void)user; (void)param;
-    note("ImeKeyboardOpen: no keyboard; returning NOT_OPENED");
-    return (int32_t)0x80BC0002;
+/* The CyberConnect2 boot path opens the IME keyboard and waits for the
+ * KeyboardOpen event. Returning NOT_OPENED makes it retry every frame (the
+ * blank-screen log). Keep the handler and dispatch the event on Update,
+ * mirroring Kyty's implementation. */
+typedef struct {
+    uint32_t option;
+    int8_t reserved1[4];
+    void *arg;
+    void *handler;
+    int8_t reserved2[8];
+} ImeKeyboardParam;
+typedef struct {
+    uint32_t id;
+    uint32_t pad;
+    uint8_t param[64];
+} ImeKeyboardEvent;
+static struct {
+    int open, pending;
+    uint32_t user;
+    void *arg, *handler;
+} ime_keyboard;
+static ABI int32_t ime_keyboard_open(uint32_t user,const ImeKeyboardParam *param) {
+    if (!param || !param->handler) return (int32_t)0x80BC0022; /* INVALID_HANDLER */
+    ime_keyboard.open=1;
+    ime_keyboard.pending=1;
+    ime_keyboard.user=user;
+    ime_keyboard.arg=param->arg;
+    ime_keyboard.handler=param->handler;
+    note("ImeKeyboardOpen: queued KeyboardOpen event");
+    return 0;
+}
+static ABI int32_t ime_keyboard_update(void) {
+    if (!ime_keyboard.open || !ime_keyboard.pending) return 0;
+    ime_keyboard.pending=0;
+    ImeKeyboardEvent event;
+    memset(&event,0,sizeof(event));
+    event.id=256; /* OrbisImeEventId::KeyboardOpen */
+    memcpy(event.param,&ime_keyboard.user,sizeof(ime_keyboard.user));
+    uint64_t args[2]={(uint64_t)(uintptr_t)ime_keyboard.arg,(uint64_t)(uintptr_t)&event};
+    guest_cpu_call((uintptr_t)ime_keyboard.handler,2,args);
+    return 0;
+}
+static ABI int32_t ime_keyboard_close(uint32_t user) {
+    (void)user;
+    memset(&ime_keyboard,0,sizeof(ime_keyboard));
+    return 0;
 }
 static ABI int32_t ime_keyboard_ok(void) { return 0; }
 
@@ -964,8 +1004,8 @@ static const RuntimeExport exports[]={
     {"sceNpCommerceDialogUpdateStatus",commerce_status}, {"sceNpCommerceDialogTerminate",commerce_term},
     {"sceImeDialogInit",ime_init}, {"sceImeDialogGetStatus",ime_status}, {"sceImeDialogGetResult",ime_result},
     {"sceImeDialogTerm",ime_term}, {"sceImeDialogAbort",ime_term},
-    {"sceImeKeyboardOpen",ime_keyboard_open}, {"sceImeKeyboardClose",ime_keyboard_ok},
-    {"sceImeKeyboardUpdate",ime_keyboard_ok}, {"sceImeKeyboardOpenInternal",ime_keyboard_ok},
+    {"sceImeKeyboardOpen",ime_keyboard_open}, {"sceImeKeyboardClose",ime_keyboard_close},
+    {"sceImeKeyboardUpdate",ime_keyboard_update}, {"sceImeKeyboardOpenInternal",ime_keyboard_ok},
     {"sceImeKeyboardSetMode",ime_keyboard_ok},
     {"sceNpTrophyCreateContext",trophy_context}, {"sceNpTrophyCreateHandle",trophy_handle},
     {"sceNpTrophyRegisterContext",trophy_register}, {"sceNpTrophyUnlockTrophy",trophy_unlock},
