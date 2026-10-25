@@ -29,8 +29,8 @@ internal class GameFolderManager(private val activity: Activity) {
         const val REQUEST_GAME_FOLDER = 1001
         const val REQUEST_UPDATE_FOLDER = 1007
         const val REQUEST_STORAGE = 1002
-        private val SERIALS = arrayOf("CUSA01740", "CUSA00900", "CUSA00207", "CUSA00208", "CUSA00299",
-            "CUSA01363", "CUSA03179", "CUSA03014", "CUSA03023")
+        private val SERIALS = arrayOf("CUSA04909", "CUSA01740", "CUSA00900", "CUSA00207", "CUSA00208",
+            "CUSA00299", "CUSA01363", "CUSA03179", "CUSA03014", "CUSA03023")
     }
 
     private enum class Kind { GAME, UPDATE }

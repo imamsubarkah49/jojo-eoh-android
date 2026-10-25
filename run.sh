@@ -36,9 +36,9 @@ if [[ -z ${PYTHON:-} ]]; then
     fi
 fi
 if [[ -z ${PYTHON:-} ]]; then echo 'Install Python 3 or set PYTHON.' >&2; exit 1; fi
-# GOW3_GAME_DIR: the game's folder (eboot.bin, sce_module, ...); default next to this directory.
-game=${GOW3_GAME_DIR:-../CUSA01623}
-if [[ ! -f $game/eboot.bin ]]; then echo "No eboot.bin in $game (set GOW3_GAME_DIR)." >&2; exit 1; fi
+# JOJO_GAME_DIR: the game's folder (eboot.bin, sce_module, ...); default next to this directory.
+game=${JOJO_GAME_DIR:-${GOW3_GAME_DIR:-../CUSA04909}}
+if [[ ! -f $game/eboot.bin ]]; then echo "No eboot.bin in $game (set JOJO_GAME_DIR)." >&2; exit 1; fi
 original_game=$game
 game=$("$PYTHON" scripts/mods.py "$game" --out "$out" \
     --mods-dir "${GOW3_MODS_DIR:-$data/mods}" --config "${GOW3_MODS_CONFIG:-$data/mods.json}" \

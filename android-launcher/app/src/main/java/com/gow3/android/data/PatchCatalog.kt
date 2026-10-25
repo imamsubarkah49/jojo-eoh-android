@@ -85,6 +85,7 @@ data class GamePatch(
 internal fun PatchCatalog.toNativeInput(): String = buildString {
     val field = { value: String -> value.trim().ifEmpty { "-" } }
     for (patch in patches) {
+        if (patch.lines.isEmpty()) continue
         append("P ").append(field(patch.name)).append('\n')
         append("N ").append(field(patch.note.replace("\\", "\\\\").replace("\n", "\\n"))).append('\n')
         append("V ").append(field(patch.appVersion)).append('\n')
@@ -178,6 +179,7 @@ data class PatchCatalog(val titleId: String, val appVersion: String, val patches
         private val versions = mapOf(
             "CUSA01623" to setOf("01.02"), "CUSA01715" to setOf("01.02"),
             "CUSA01720" to setOf("01.02"), "CUSA01740" to setOf("01.00", "01.02"),
+            "CUSA04909" to setOf("01.00", "01.06"),
         )
 
         // The caller opens the asset, so a missing one surfaces as an IOException to Java callers.
@@ -218,7 +220,9 @@ data class PatchCatalog(val titleId: String, val appVersion: String, val patches
             val version = effective["APP_VER"] ?: throw PatchCatalogException(CatalogProblem.INVALID_GAME)
             if (title !in versions) throw PatchCatalogException(CatalogProblem.UNSUPPORTED)
             if (version !in versions.getValue(title)) throw PatchCatalogException(CatalogProblem.VERSION)
-            val catalog = open("God_of_War_III_Remastered_$title.xml").use { parse(it, title, version) }
+            val catalogName = if (title == "CUSA04909") "JoJo_Eyes_of_Heaven_$title.xml"
+                              else "God_of_War_III_Remastered_$title.xml"
+            val catalog = open(catalogName).use { parse(it, title, version) }
             if (!modsEnabled || modsDir == null || !modsDir.isDirectory) return catalog
             val modPatches = ArrayList<GamePatch>()
             for (file in ModFileResolver.enabledPatchFiles(modsDir, modsConfig, true, update ?: game)) {

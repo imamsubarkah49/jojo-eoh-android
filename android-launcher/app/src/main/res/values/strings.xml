@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- 桌面名称（Manifest android:label）。debug 变体经 src/debug 资源覆盖加 Debug 标识。 -->
-    <string name="app_name">God of War III</string>
+    <string name="app_name">JoJo EoH</string>
 
     <!-- 品牌与关键动作按钮：双语同值，不翻译 -->
-    <string name="title_god_of_war_iii">GOD OF WAR III</string>
-    <string name="title_remastered">REMASTERED</string>
+    <string name="title_god_of_war_iii">JOJO</string>
+    <string name="title_remastered">EYES OF HEAVEN</string>
     <string name="launch_button">LAUNCH</string>
     <string name="start_game_button">START GAME</string>
 
@@ -264,18 +264,18 @@
     <string name="cheat_very_hard_detail">Queries the completion level as Very Hard, progress untouched</string>
     <string name="cheat_double_jumps_detail">The used air-jump flag is ignored, other movement checks intact</string>
     <string name="cheat_note">Cheats apply at the next game start (the hooks read gow3.ini before the game runs).</string>
-    <string name="drawer_confirm_restart_title">Restart God of War III?</string>
+    <string name="drawer_confirm_restart_title">Restart JoJo EoH?</string>
     <string name="drawer_confirm_restart_message">Any unsaved progress will be lost.</string>
-    <string name="drawer_confirm_quit_title">Quit God of War III?</string>
+    <string name="drawer_confirm_quit_title">Quit JoJo EoH?</string>
     <string name="drawer_confirm_quit_message">Any unsaved progress will be lost.</string>
     <string name="drawer_confirm_cancel">Cancel</string>
     <string name="drawer_confirm_restart_ok">Restart</string>
     <string name="drawer_confirm_quit_ok">Quit</string>
 
     <!-- About 页 -->
-    <string name="about_title">God of War III for Android</string>
+    <string name="about_title">JoJo EoH for Android</string>
     <string name="about_version_fmt">Version %1$s</string>
-    <string name="about_description">A community launcher bringing the God of War III Remastered experience to Android via emulation.</string>
+    <string name="about_description">An unofficial community port of JoJo\'s Bizarre Adventure: Eyes of Heaven for Android, built on the shadPS4/FEX Android stack.</string>
     <string name="about_third_party_licenses">Third-party licenses</string>
     <string name="update_check_title">Check for updates</string>
     <string name="update_check_action">CHECK</string>
@@ -388,7 +388,7 @@
     <string name="save_archive_unsafe_path_fmt">The archive contains an unsafe path: %1$s</string>
     <string name="save_archive_duplicate_fmt">The archive contains a duplicate path: %1$s</string>
     <string name="save_archive_wrong_layout_fmt">The archive layout is not a savedata layout: %1$s</string>
-    <string name="save_archive_title_fmt">The archive title does not match God of War III (%2$s): %1$s</string>
+    <string name="save_archive_title_fmt">The archive title does not match JoJo EoH (%2$s): %1$s</string>
     <string name="lossless_no_readable_name">That file has no readable name.</string>
     <string name="lossless_wrong_file_fmt">That is not %1$s (selected: %2$s).</string>
     <string name="lossless_empty_fmt">%1$s is empty.</string>
@@ -397,9 +397,9 @@
 
     <!-- 游戏目录管理器 -->
     <string name="storage_permission_title">Storage permission required</string>
-    <string name="storage_permission_message">God of War III needs storage access to read the game folder.</string>
-    <string name="not_a_game_folder">Not a God of War III folder</string>
-    <string name="not_a_game_update_folder">Not a God of War III update folder</string>
+    <string name="storage_permission_message">JoJo EoH needs storage access to read the game folder.</string>
+    <string name="not_a_game_folder">Not a JoJo EoH folder</string>
+    <string name="not_a_game_update_folder">Not a JoJo EoH update folder</string>
     <string name="choose_again">Choose again</string>
     <string name="no_eboot">That location has no eboot.bin.</string>
     <string name="no_eboot_path_fmt">%1$s has no eboot.bin.</string>
@@ -408,8 +408,8 @@
     <string name="folder_eyebrow_update">GAME UPDATE</string>
     <string name="folder_title_game">Choose your game folder</string>
     <string name="folder_title_update">Choose the game update folder</string>
-    <string name="folder_message_update">Optional: the update (patch) folder of the game, e.g. CUSA01740-patch. Its eboot.bin and sce_sys are laid over the game at start; the game files are never changed. Leave it empty to use the game folder as-is.</string>
-    <string name="folder_message_game">Select the extracted God of War III folder, such as CUSA01740, or its parent folder. The selected location must contain eboot.bin.</string>
+    <string name="folder_message_update">Optional: the update (patch) folder of the game, e.g. CUSA04909-patch. Its eboot.bin and sce_sys are laid over the game at start; the game files are never changed. Leave it empty to use the game folder as-is.</string>
+    <string name="folder_message_game">Select the extracted JoJo EoH folder, such as CUSA04909, or its parent folder. The selected location must contain eboot.bin.</string>
     <string name="folder_current_selection_fmt">\n\nCurrent selection:\n%1$s</string>
     <string name="folder_choose_update">CHOOSE UPDATE FOLDER</string>
     <string name="folder_choose_game">CHOOSE GAME FOLDER</string>

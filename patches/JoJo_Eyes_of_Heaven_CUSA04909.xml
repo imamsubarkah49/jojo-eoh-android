@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Patch>
+    <TitleID>
+        <ID>CUSA04909</ID>
+    </TitleID>
+    <!-- JoJo EoH port scaffold. These entries exist so the launcher can accept
+         the title and version; they contain no byte writes yet. Add validated
+         resolution / frame-rate / skip-video patches here, one Metadata per
+         patch, after checking each signature against the user's own eboot. -->
+    <Metadata Title="JoJo's Bizarre Adventure: Eyes of Heaven"
+              Name="Profile - JoJo EoH 01.00"
+              Note="Compatibility profile placeholder. No byte writes yet; the game runs with its original executable."
+              Author="JoJo EoH Android port"
+              PatchVer="0.1" AppVer="01.00" AppElf="eboot.bin"
+              isEnabled="false" Validation="placeholder">
+        <PatchList />
+    </Metadata>
+    <Metadata Title="JoJo's Bizarre Adventure: Eyes of Heaven"
+              Name="Profile - JoJo EoH 01.06"
+              Note="Compatibility profile placeholder. No byte writes yet; the game runs with its original executable."
+              Author="JoJo EoH Android port"
+              PatchVer="0.1" AppVer="01.06" AppElf="eboot.bin"
+              isEnabled="false" Validation="placeholder">
+        <PatchList />
+    </Metadata>
+</Patch>

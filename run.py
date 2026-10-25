@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: GPL-2.0-or-later
-"""Windows counterpart of run.sh: prepares the game image and starts gow3-probe.exe.
+"""Windows counterpart of run.sh: prepares the JoJo image and starts gow3-probe.exe.
 
-Same environment variables as run.sh (GOW3_GAME_DIR, GOW3_DATA_DIR, GOW3_PATCHES, GOW3_MODS_*,
-GOW3_USER_DIR, ...). Extra arguments go to gow3-probe.
+Game folder: JOJO_GAME_DIR (or the upstream GOW3_GAME_DIR; default ../CUSA04909).
+Other upstream variables still use the GOW3_ prefix in this first port commit
+(GOW3_DATA_DIR, GOW3_PATCHES, GOW3_MODS_*, GOW3_USER_DIR, ...). Extra arguments go
+to gow3-probe.
 The in-game "Apply and restart" runs this script again through GOW3_RESTART_COMMAND;
 `--after PID` waits for the previous game process to end first (its GPU device and memory).
 """
@@ -91,9 +93,9 @@ def main():
         if clang64.is_dir():
             env['PATH'] = f'{clang64}{os.pathsep}{env.get("PATH", "")}'
 
-    game = Path(env.get('GOW3_GAME_DIR', PORT.parent / 'CUSA01623'))
+    game = Path(env.get('JOJO_GAME_DIR', env.get('GOW3_GAME_DIR', PORT.parent / 'CUSA04909')))
     if not (game / 'eboot.bin').is_file():
-        fail(f'No eboot.bin in {game} (set GOW3_GAME_DIR).')
+        fail(f'No eboot.bin in {game} (set JOJO_GAME_DIR).')
     original_game = game.resolve()
     game = Path(run_script('mods.py', game, '--out', out,
                            '--mods-dir', env.get('GOW3_MODS_DIR', data / 'mods'),

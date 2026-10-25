@@ -56,7 +56,7 @@ int vulkan_smoke(void) {
 
 int vulkan_smoke(void) {
 #endif
-    VkApplicationInfo app = {.sType=VK_STRUCTURE_TYPE_APPLICATION_INFO, .pApplicationName="God of War III native probe", .apiVersion=VK_API_VERSION_1_0};
+    VkApplicationInfo app = {.sType=VK_STRUCTURE_TYPE_APPLICATION_INFO, .pApplicationName="JoJo EoH native probe", .apiVersion=VK_API_VERSION_1_0};
     VkInstanceCreateInfo ici = {.sType=VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO, .pApplicationInfo=&app};
     VkInstance instance; CHECK(vkCreateInstance(&ici, NULL, &instance));
 #ifdef __ANDROID__

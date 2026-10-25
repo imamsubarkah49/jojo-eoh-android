@@ -15,7 +15,9 @@
 #define ERR_INVALID_MINUTE ((int32_t)0x80B5000C)
 #define ERR_INVALID_SECOND ((int32_t)0x80B5000D)
 #define ERR_INVALID_MICROSECOND ((int32_t)0x80B5000E)
+#define ERR_INVALID_VALUE ((int32_t)0x80B50003)
 #define UNIX_EPOCH_TICKS UINT64_C(0xdcbffeff2bc000)
+#define WIN32_EPOCH_FILETIME UINT64_C(116444736000000000) /* 1970-01-01 in 100 ns units */
 #define TICKS_PER_DAY UINT64_C(86400000000)
 
 typedef struct { uint16_t year, month, day, hour, minute, second; uint32_t microsecond; } DateTime;
@@ -143,6 +145,59 @@ static ABI int32_t rtc_rfc2822_local(char *out, const uint64_t *utc_tick) {
     memcpy(out,text,strlen(text)+1); /* 31 characters + NUL, the SDK's buffer size */
     return 0;
 }
+/* "YYYY-MM-DD HH:MM:SS" or "YYYY-MM-DDTHH:MM:SS", optional fraction. */
+static int32_t parse_datetime(const char *text, DateTime *t) {
+    int y,mo,d,h,mi,s;
+    if (sscanf(text,"%d-%d-%d%*c%d:%d:%d",&y,&mo,&d,&h,&mi,&s)!=6) return ERR_INVALID_VALUE;
+    memset(t,0,sizeof(*t));
+    t->year=(uint16_t)y; t->month=(uint16_t)mo; t->day=(uint16_t)d;
+    t->hour=(uint16_t)h; t->minute=(uint16_t)mi; t->second=(uint16_t)s;
+    const char *dot=strchr(text,'.');
+    if (dot) {
+        uint32_t us=0; int digits=0;
+        for (const char *p=dot+1; *p>='0' && *p<='9' && digits<6; ++p,++digits) us=us*10+(uint32_t)(*p-'0');
+        while (digits++<6) us*=10;
+        t->microsecond=us;
+    }
+    return validate(t);
+}
+static ABI int32_t rtc_parse_datetime(uint64_t *tick, const char *text) {
+    if (!tick || !text) return ERR_INVALID_POINTER;
+    DateTime t; int32_t e=parse_datetime(text,&t);
+    if (e) return e;
+    *tick=to_tick(&t); return 0;
+}
+/* RFC 3339: "YYYY-MM-DDTHH:MM:SS[.ffffff](Z|+HH:MM|-HH:MM)". */
+static ABI int32_t rtc_parse_rfc3339(uint64_t *tick, const char *text) {
+    if (!tick || !text) return ERR_INVALID_POINTER;
+    DateTime t; int32_t e=parse_datetime(text,&t);
+    if (e) return e;
+    uint64_t value=to_tick(&t);
+    const char *zone=text+10; /* at least the date and 'T' */
+    while (*zone && *zone!='Z' && *zone!='+' && *zone!='-' && *zone!='.') ++zone;
+    if (*zone=='Z') { *tick=value; return 0; }
+    if (*zone=='+' || *zone=='-') {
+        int oh=0,om=0;
+        if (sscanf(zone+1,"%2d:%2d",&oh,&om)!=2) return ERR_INVALID_VALUE;
+        int64_t offset=((int64_t)oh*60+om)*60000000;
+        *tick=(uint64_t)((int64_t)value + (*zone=='+' ? -offset : offset));
+        return 0;
+    }
+    *tick=value; /* no zone: treat as UTC */
+    return 0;
+}
+static ABI int32_t rtc_get_win32_filetime(const uint64_t *tick, uint64_t *filetime) {
+    if (!tick || !filetime) return ERR_INVALID_POINTER;
+    if (*tick<UNIX_EPOCH_TICKS) return ERR_INVALID_VALUE;
+    *filetime=(*tick-UNIX_EPOCH_TICKS)*10+WIN32_EPOCH_FILETIME;
+    return 0;
+}
+static ABI int32_t rtc_set_win32_filetime(uint64_t *tick, const uint64_t *filetime) {
+    if (!tick || !filetime) return ERR_INVALID_POINTER;
+    if (*filetime<WIN32_EPOCH_FILETIME) return ERR_INVALID_VALUE;
+    *tick=UNIX_EPOCH_TICKS+(*filetime-WIN32_EPOCH_FILETIME)/10;
+    return 0;
+}
 
 static const RuntimeExport exports[]={
     {"sceRtcGetCurrentClockLocalTime",rtc_current_local}, {"sceRtcGetCurrentClock",rtc_current_clock},
@@ -151,5 +206,7 @@ static const RuntimeExport exports[]={
     {"sceRtcGetDayOfWeek",rtc_day_of_week}, {"sceRtcGetTick",rtc_get_tick}, {"sceRtcSetTick",rtc_set_tick},
     {"sceRtcGetTickResolution",rtc_tick_resolution}, {"sceRtcSetTime_t",rtc_set_time_t},
     {"sceRtcGetTime_t",rtc_get_time_t}, {"sceRtcFormatRFC2822LocalTime",rtc_rfc2822_local},
+    {"sceRtcParseDateTime",rtc_parse_datetime}, {"sceRtcParseRFC3339",rtc_parse_rfc3339},
+    {"sceRtcGetWin32FileTime",rtc_get_win32_filetime}, {"sceRtcSetWin32FileTime",rtc_set_win32_filetime},
 };
 uintptr_t runtime_rtc_resolve(const char *name) { return RUNTIME_LOOKUP(exports,name); }

@@ -406,6 +406,7 @@ static int cheat_identity(const char *app0) {
     sfo_value(path, "APP_VER", version, sizeof(version), NULL);
     for (unsigned i = 0; i < sizeof(candidates) / sizeof(candidates[0]); ++i)
         if (!strcmp(serial, candidates[i][0]) && !strcmp(version, candidates[i][1])) return 1;
+    if (!strcmp(serial, "CUSA04909")) return 0; /* JoJo EoH: the GOW3 hooks do not apply. */
     /* Not silent: an unsupported identity is the one case where no cheat is installed at all,
      * so the log has to say which game was seen. */
     printf("FEX Cheats: OFF - unsupported game identity %s %s (no cheats installed)\n",
@@ -898,7 +899,7 @@ int main(int argc, char **argv) {
     if (fread(image, 1, size, f) != size || fgetc(f) != EOF) fail("incorrect memory image size");
     fclose(f);
     if (!cpu_only) {
-        char title[128]="God of War III", serial[16]="UNKNOWN", sfo[4096];
+        char title[128]="JoJo's Bizarre Adventure: Eyes of Heaven", serial[16]="UNKNOWN", sfo[4096];
         uint32_t attributes=0;
         snprintf(sfo,sizeof(sfo),"%s/sce_sys/param.sfo",app0 ? app0 : ".");
         sfo_value(sfo,"TITLE",title,sizeof(title),NULL);

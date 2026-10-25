@@ -53,7 +53,7 @@ internal object SaveArchive {
      * （`AUTOSAVE/SAVEDATA` 等）不内嵌 title_id，目录名只是按代号分区，因此把
      * `savedata/<user>/<source>/...` 重命名为期望代号即可被运行时读取。
      */
-    val ALLOWED_TITLES = setOf("CUSA01740", "CUSA01715")
+    val ALLOWED_TITLES = setOf("CUSA04909", "CUSA01740", "CUSA01715")
 
     /** 当目录中至少含一个存档文件（游戏非空的 savedata 目录树）时为 true。 */
     fun hasSaves(savedata: File): Boolean =
