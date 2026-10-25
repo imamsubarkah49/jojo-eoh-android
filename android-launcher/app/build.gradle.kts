@@ -19,7 +19,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.gow3.android.bionic"
+        applicationId = "com.jojo.eoh"
         minSdk = 28
         targetSdk = 28
         versionCode = 2010704

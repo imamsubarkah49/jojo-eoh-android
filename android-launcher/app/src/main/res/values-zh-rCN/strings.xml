@@ -3,7 +3,7 @@
     <string name="app_name">JoJo EoH</string>
 
     <!-- 品牌与关键动作按钮：双语同值，不翻译 -->
-    <string name="title_god_of_war_iii">GOD OF WAR III</string>
+    <string name="title_god_of_war_iii">JOJO</string>
     <string name="title_remastered">REMASTERED</string>
     <string name="launch_button">LAUNCH</string>
     <string name="start_game_button">START GAME</string>
@@ -26,9 +26,9 @@
     <string name="game_folder_hint">点击选择其他目录</string>
     <string name="update_folder_label">升级补丁目录</string>
     <string name="update_folder_not_set">未设置（使用游戏目录原样）</string>
-    <string name="update_folder_description">可选：游戏的升级（补丁）目录，例如 CUSA01740-patch。启动时叠加到游戏上。</string>
+    <string name="update_folder_description">可选：游戏的升级（补丁）目录，例如 CUSA04909-patch。启动时叠加到游戏上。</string>
     <string name="change_button">更改  ›</string>
-    <string name="launch_parameters_footer">改动会立即保存到 gow3.ini，并在下次启动时生效。</string>
+    <string name="launch_parameters_footer">改动会立即保存到 settings file，并在下次启动时生效。</string>
     <string name="dialog_ok">确定</string>
 
     <!-- 启动参数：参数名 -->
@@ -124,7 +124,7 @@
     <string name="first_run_required">必选</string>
     <string name="first_run_optional">可选</string>
     <string name="first_run_tap_to_select">点击选择</string>
-    <string name="first_run_update_desc">可选：游戏的升级补丁目录（如 CUSA01740-patch），启动时叠加到主游戏。</string>
+    <string name="first_run_update_desc">可选：游戏的升级补丁目录（如 CUSA04909-patch），启动时叠加到主游戏。</string>
     <string name="first_run_confirm">确认</string>
     <string name="first_run_confirm_locked">请先选择游戏目录</string>
 
@@ -246,17 +246,17 @@
     <string name="cheat_orbs_detail">拾取红宝石时直接加满</string>
     <string name="cheat_very_hard_detail">只改查询到的完成等级，不动存档进度</string>
     <string name="cheat_double_jumps_detail">忽略已用过的空中跳跃标志，其余移动判定不变</string>
-    <string name="cheat_note">作弊在下次启动游戏时生效（hook 在游戏运行前读取 gow3.ini）。</string>
-    <string name="drawer_confirm_restart_title">重启 God of War III？</string>
+    <string name="cheat_note">作弊在下次启动游戏时生效（hook 在游戏运行前读取 settings file）。</string>
+    <string name="drawer_confirm_restart_title">重启 JoJo EoH？</string>
     <string name="drawer_confirm_restart_message">任何未保存的进度都将丢失。</string>
-    <string name="drawer_confirm_quit_title">退出 God of War III？</string>
+    <string name="drawer_confirm_quit_title">退出 JoJo EoH？</string>
     <string name="drawer_confirm_quit_message">任何未保存的进度都将丢失。</string>
     <string name="drawer_confirm_cancel">取消</string>
     <string name="drawer_confirm_restart_ok">重启</string>
     <string name="drawer_confirm_quit_ok">退出</string>
 
     <!-- About 页 -->
-    <string name="about_title">God of War III Android</string>
+    <string name="about_title">JoJo EoH Android</string>
     <string name="about_version_fmt">版本 %1$s</string>
     <string name="about_description">一个通过模拟将《战神 III 重制版》体验带到 Android 的社区启动器。</string>
     <string name="about_third_party_licenses">第三方许可</string>
@@ -286,7 +286,7 @@
     <string name="save_export">导出存档</string>
     <string name="save_import">导入存档</string>
     <string name="save_import_footer">导入会替换当前存档，但已有存档会先备份到应用私有目录内。</string>
-    <string name="save_import_cross_region">可导入 CUSA01715 与 CUSA01740 版本的存档，并会自动转换为当前版本。</string>
+    <string name="save_import_cross_region">可导入 CUSA01715 与 CUSA04909 版本的存档，并会自动转换为当前版本。</string>
 
     <!-- 日志卡片 -->
     <string name="log_runtime_logs">运行时日志</string>
@@ -371,7 +371,7 @@
     <string name="save_archive_unsafe_path_fmt">归档包含非法路径：%1$s</string>
     <string name="save_archive_duplicate_fmt">归档包含重复路径：%1$s</string>
     <string name="save_archive_wrong_layout_fmt">归档结构不是存档布局：%1$s</string>
-    <string name="save_archive_title_fmt">归档标题与 God of War III（%2$s）不匹配：%1$s</string>
+    <string name="save_archive_title_fmt">归档标题与 JoJo EoH（%2$s）不匹配：%1$s</string>
     <string name="lossless_no_readable_name">该文件没有可读的文件名。</string>
     <string name="lossless_wrong_file_fmt">这不是 %1$s（所选：%2$s）。</string>
     <string name="lossless_empty_fmt">%1$s 是空文件。</string>
@@ -391,8 +391,8 @@
     <string name="folder_eyebrow_update">游戏升级补丁</string>
     <string name="folder_title_game">选择你的游戏目录</string>
     <string name="folder_title_update">选择游戏升级补丁目录</string>
-    <string name="folder_message_update">可选：游戏的升级（补丁）目录，例如 CUSA01740-patch。启动时它的 eboot.bin 与 sce_sys 会叠加到游戏上；游戏文件不会被改动。留空则使用游戏目录原样。</string>
-    <string name="folder_message_game">选择解压后的《战神 III》目录（例如 CUSA01740）或其父目录。所选位置必须包含 eboot.bin。</string>
+    <string name="folder_message_update">可选：游戏的升级（补丁）目录，例如 CUSA04909-patch。启动时它的 eboot.bin 与 sce_sys 会叠加到游戏上；游戏文件不会被改动。留空则使用游戏目录原样。</string>
+    <string name="folder_message_game">选择解压后的《战神 III》目录（例如 CUSA04909）或其父目录。所选位置必须包含 eboot.bin。</string>
     <string name="folder_current_selection_fmt">\n\n当前选择：\n%1$s</string>
     <string name="folder_choose_update">选择升级补丁目录</string>
     <string name="folder_choose_game">选择游戏目录</string>
@@ -447,7 +447,7 @@
     <string name="driver_manager_import">导入驱动</string>
     <string name="driver_manager_network">下载加速</string>
     <string name="driver_manager_needs_game_folder">请先选择游戏目录，之后才能更改驱动。</string>
-    <string name="driver_manager_footer">驱动包保存在应用私有目录，运行链在下次启动时经 gow3.ini 解析加载。</string>
+    <string name="driver_manager_footer">驱动包保存在应用私有目录，运行链在下次启动时经 settings file 解析加载。</string>
 
     <string name="driver_dl_title">下载驱动</string>
     <string name="driver_dl_sources_unavailable">内置驱动源列表无法加载。</string>

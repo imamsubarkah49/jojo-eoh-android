@@ -12,7 +12,6 @@ import com.gow3.android.data.session.SaveManager
 import com.gow3.android.ui.components.LauncherColors
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -44,8 +43,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -148,12 +145,6 @@ internal fun LauncherScreen(
 
 @Composable
 private fun ScreenBackground() {
-    Image(
-        painter = painterResource(R.drawable.bg_wallpaper),
-        contentDescription = null,
-        modifier = Modifier.fillMaxSize(),
-        contentScale = ContentScale.Crop,
-    )
     Box(
         modifier = Modifier
             .fillMaxSize()

@@ -11,8 +11,8 @@ package com.gow3.android.data.model
  * `GOW3_RELEASE_REPO` 决定，若改指向其它仓库，这里的取值必须同步。
  */
 internal object ProjectRepo {
-    const val OWNER = "zFitness"
-    const val NAME = "gow3_android"
+    const val OWNER = "imamsubarkah49"
+    const val NAME = "jojo-eoh-android"
 
     val URL: String get() = "https://github.com/$OWNER/$NAME"
     val ISSUES_URL: String get() = "$URL/issues"

@@ -27,9 +27,9 @@
     <string name="game_folder_hint">Tap to choose a different folder</string>
     <string name="update_folder_label">Update folder</string>
     <string name="update_folder_not_set">Not set (use the game folder as-is)</string>
-    <string name="update_folder_description">Optional: the game\'s update (patch) folder, e.g. CUSA01740-patch. Laid over the game at start.</string>
+    <string name="update_folder_description">Optional: the game\'s update (patch) folder, e.g. CUSA04909-patch. Laid over the game at start.</string>
     <string name="change_button">CHANGE  ›</string>
-    <string name="launch_parameters_footer">Changes are saved to gow3.ini immediately and take effect at the next launch.</string>
+    <string name="launch_parameters_footer">Changes are saved to settings file immediately and take effect at the next launch.</string>
     <string name="dialog_ok">OK</string>
 
     <!-- 启动参数：参数名 -->
@@ -141,7 +141,7 @@
     <string name="first_run_required">REQUIRED</string>
     <string name="first_run_optional">OPTIONAL</string>
     <string name="first_run_tap_to_select">Tap to select</string>
-    <string name="first_run_update_desc">Optional: the update (patch) folder of the game, e.g. CUSA01740-patch, laid over the game at start.</string>
+    <string name="first_run_update_desc">Optional: the update (patch) folder of the game, e.g. CUSA04909-patch, laid over the game at start.</string>
     <string name="first_run_confirm">CONFIRM</string>
     <string name="first_run_confirm_locked">Select a game folder first</string>
 
@@ -263,7 +263,7 @@
     <string name="cheat_orbs_detail">Red orbs collected as the maximum</string>
     <string name="cheat_very_hard_detail">Queries the completion level as Very Hard, progress untouched</string>
     <string name="cheat_double_jumps_detail">The used air-jump flag is ignored, other movement checks intact</string>
-    <string name="cheat_note">Cheats apply at the next game start (the hooks read gow3.ini before the game runs).</string>
+    <string name="cheat_note">Cheats apply at the next game start (the hooks read settings file before the game runs).</string>
     <string name="drawer_confirm_restart_title">Restart JoJo EoH?</string>
     <string name="drawer_confirm_restart_message">Any unsaved progress will be lost.</string>
     <string name="drawer_confirm_quit_title">Quit JoJo EoH?</string>
@@ -299,22 +299,22 @@
     <string name="save_data_title">SAVE DATA</string>
     <string name="saves_found">Saves found</string>
     <string name="no_saves_yet">No saves yet</string>
-    <string name="save_data_description">Back up your God of War III saves to a .zip file, or restore a backup. The game\'s savedata lives in the app\'s private folder.</string>
+    <string name="save_data_description">Back up your JoJo EoH saves to a .zip file, or restore a backup. The game\'s savedata lives in the app\'s private folder.</string>
     <string name="save_export">EXPORT SAVE</string>
     <string name="save_import">IMPORT SAVE</string>
     <string name="save_import_footer">Importing replaces the current saves, but the existing ones are backed up first into the app\'s private folder.</string>
-    <string name="save_import_cross_region">Saves from the CUSA01715 and CUSA01740 releases can be imported and are converted automatically.</string>
+    <string name="save_import_cross_region">Saves from the CUSA01715 and CUSA04909 releases can be imported and are converted automatically.</string>
 
     <!-- 日志卡片 -->
     <string name="log_runtime_logs">RUNTIME LOGS</string>
     <string name="logs_found">Logs found</string>
     <string name="no_logs_yet">No logs yet</string>
-    <string name="log_description">Export the God of War III runtime logs to a .zip file for troubleshooting, or share them straight away. The game\'s log (android-game.log) lives in the app\'s private folder.</string>
+    <string name="log_description">Export the JoJo EoH runtime logs to a .zip file for troubleshooting, or share them straight away. The game\'s log (android-game.log) lives in the app\'s private folder.</string>
     <string name="log_export">EXPORT LOGS</string>
     <string name="log_share">SHARE LOGS</string>
     <string name="log_export_footer">Exporting only reads the runtime log files; it never modifies them or grabs the system logcat.</string>
     <string name="log_no_logs_share">No logs to share</string>
-    <string name="log_share_chooser">Share God of War III logs</string>
+    <string name="log_share_chooser">Share JoJo EoH logs</string>
     <string name="log_shared">Logs packaged — pick an app to share them.</string>
     <string name="log_share_failed_fmt">Sharing failed: %1$s</string>
 
@@ -464,7 +464,7 @@
     <string name="driver_manager_import">IMPORT DRIVERS</string>
     <string name="driver_manager_network">DOWNLOAD ACCELERATION</string>
     <string name="driver_manager_needs_game_folder">Select your game folder before changing drivers.</string>
-    <string name="driver_manager_footer">Driver packs live in the launcher\'s private storage and are resolved through gow3.ini at the next launch.</string>
+    <string name="driver_manager_footer">Driver packs live in the launcher\'s private storage and are resolved through settings file at the next launch.</string>
 
     <string name="driver_dl_title">Download drivers</string>
     <string name="driver_dl_sources_unavailable">The built-in driver source list could not be loaded.</string>
