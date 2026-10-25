@@ -45,6 +45,7 @@ typedef struct GuestThread {
     unsigned char *guest_stack;
     size_t guest_stack_size;
     pthread_t host;
+    int32_t tid;
     GuestEntry entry;
     void *argument, *result;
     ThreadAttr attr;
@@ -61,6 +62,7 @@ typedef struct GuestThread {
 static pthread_mutex_t lock=PTHREAD_MUTEX_INITIALIZER;
 static ThreadAttr *attributes;
 static GuestThread *threads;
+static int32_t next_tid=1;
 static _Thread_local GuestThread *current;
 static _Thread_local int32_t guest_errno;
 static const unsigned char *tls_template;
@@ -112,6 +114,7 @@ static void attach(GuestThread *t) {
 static GuestThread *new_thread(void) {
     GuestThread *t=calloc(1,sizeof(*t));
     if (!t) return NULL;
+    t->tid=__atomic_fetch_add(&next_tid,1,__ATOMIC_RELAXED);
     t->attr=(ThreadAttr){.magic=ATTR_MAGIC,.policy=1,.prio=DEFAULT_PRIO,.stack=DEFAULT_STACK,.affinity=0x7f};
     return t;
 }
@@ -367,6 +370,13 @@ static ABI int32_t thread_rename(GuestThread *t,const char *name) {
     return 0;
 }
 static ABI int32_t thread_equal(GuestThread *a,GuestThread *b) { return a==b; }
+/* libkernel's pthread_getthreadid_np (Orbis NID EI-5-jlq2dE). The game uses
+ * this for its per-thread state/timing tables; returning 0 makes every thread
+ * look like the main thread and desynchronises CyberConnect2's job system. */
+static ABI int32_t thread_getthreadid(void) {
+    GuestThread *t=runtime_thread_current();
+    return t ? t->tid : 0;
+}
 
 /* POSIX (libScePosix) variants return positive errno values. */
 static int32_t posix(int32_t r) { return r ? (int32_t)((uint32_t)r&0xffff) : 0; }
@@ -395,6 +405,7 @@ uintptr_t runtime_thread_resolve(const char *name) {
         {"T72hz6ffq08#libkernel",thread_yield}, {"1tKyG7RlMJo#libkernel",thread_get_prio},
         {"W0Hpm2X0uPE#libkernel",thread_set_prio}, {"bt3CTBKmGyI#libkernel",thread_set_affinity}, {"rcrVFJsQWRY#libkernel",thread_get_affinity},
         {"GBUY7ywdULE#libkernel",thread_rename}, {"3PtV6p3QNX4#libkernel",thread_equal},
+        {"EI-5-jlq2dE#libkernel",thread_getthreadid}, {"3eqs37G74-s#libkernel",thread_getthreadid},
         {"wtkt-teR1so#libkernel",posix_attr_init}, {"zHchY8ft5pk#libkernel",posix_attr_destroy},
         {"E+tyo3lp5Lw#libkernel",posix_attr_set_detach}, {"2Q0z6rnBrTE#libkernel",posix_attr_set_stack},
         {"euKRgm0Vn2M#libkernel",posix_attr_set_param}, {"OxhIB8LB-PQ#libkernel",posix_create},
