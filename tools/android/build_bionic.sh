@@ -64,6 +64,7 @@ boost_dir=${GOW3_BOOST_DIR:-}
 boost_headers_dir=${GOW3_BOOST_HEADERS_DIR:-}
 if [[ -z $boost_dir ]]; then
     for candidate in \
+        "${CONDA_PREFIX:-/nonexistent}"/lib/cmake/Boost-* \
         "$headers/lib/cmake/Boost-1.87.0" \
         "$headers/lib/cmake/Boost-1.92.0" \
         "$(brew --prefix 2>/dev/null)/lib/cmake/Boost-1.92.0"; do
@@ -75,6 +76,7 @@ if [[ -z $boost_dir ]]; then
 fi
 if [[ -z $boost_headers_dir ]]; then
     for candidate in \
+        "${CONDA_PREFIX:-/nonexistent}"/lib/cmake/boost_headers-* \
         "$headers/lib/cmake/boost_headers-1.87.0" \
         "$headers/lib/cmake/boost_headers-1.92.0" \
         "$(brew --prefix 2>/dev/null)/lib/cmake/boost_headers-1.92.0"; do
