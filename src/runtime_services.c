@@ -117,6 +117,17 @@ static ABI int32_t safe_area(float *info) { if (!info) return SYSTEM_PARAMETER; 
 static ABI int32_t disable_music_player(void) { return 0; }
 static ABI int32_t launch_browser(void) { note("SystemService: web browser request ignored (offline)"); return 0; }
 
+/* ---- libSceIme keyboard ---- */
+/* No Android IME surface is wired into sceImeKeyboardOpen yet. Report
+ * NOT_OPENED so the game can fall back to a default profile name instead of
+ * waiting forever for a keyboard event that will never arrive. */
+static ABI int32_t ime_keyboard_open(uint32_t user,const void *param) {
+    (void)user; (void)param;
+    note("ImeKeyboardOpen: no keyboard; returning NOT_OPENED");
+    return (int32_t)0x80BC0002;
+}
+static ABI int32_t ime_keyboard_ok(void) { return 0; }
+
 /* ---- NetCtl / Net / Http / Ssl: no network ---- */
 static int32_t net_errno;
 static ABI int32_t net_init(void) { return 0; }
@@ -953,6 +964,9 @@ static const RuntimeExport exports[]={
     {"sceNpCommerceDialogUpdateStatus",commerce_status}, {"sceNpCommerceDialogTerminate",commerce_term},
     {"sceImeDialogInit",ime_init}, {"sceImeDialogGetStatus",ime_status}, {"sceImeDialogGetResult",ime_result},
     {"sceImeDialogTerm",ime_term}, {"sceImeDialogAbort",ime_term},
+    {"sceImeKeyboardOpen",ime_keyboard_open}, {"sceImeKeyboardClose",ime_keyboard_ok},
+    {"sceImeKeyboardUpdate",ime_keyboard_ok}, {"sceImeKeyboardOpenInternal",ime_keyboard_ok},
+    {"sceImeKeyboardSetMode",ime_keyboard_ok},
     {"sceNpTrophyCreateContext",trophy_context}, {"sceNpTrophyCreateHandle",trophy_handle},
     {"sceNpTrophyRegisterContext",trophy_register}, {"sceNpTrophyUnlockTrophy",trophy_unlock},
     {"sceNpTrophyGetGameInfo",trophy_game_info}, {"sceNpTrophyGetTrophyInfo",trophy_info},

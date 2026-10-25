@@ -29,3 +29,8 @@
 {"c6aYoa47YgI#libSceNpTus","sceNpTusSetMultiSlotVariable"},
 {"1Cz0hTJFyh4#libSceNpTus","sceNpTusSetMultiSlotVariableVUser"},
 {"SsC-m-S9JTA#libSceSystemService","sceSystemServiceParamGetString"},
+{"eaFXjfJv3xs#libSceIme","sceImeKeyboardOpen"},
+{"PMVehSlfZ94#libSceIme","sceImeKeyboardClose"},
+{"3Hx2Uw9xnv8#libSceIme","sceImeKeyboardUpdate"},
+{"oYkJlMK51SA#libSceIme","sceImeKeyboardOpenInternal"},
+{"ua+13Hk9kKs#libSceIme","sceImeKeyboardSetMode"},
