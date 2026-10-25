@@ -132,15 +132,8 @@ internal fun FirstRunScreen(
                 identity = identity,
                 onClick = onChooseGame,
             )
-            EntryCard(
-                title = stringResource(R.string.first_run_update_folder),
-                tag = stringResource(R.string.first_run_optional),
-                tagHighlighted = false,
-                path = updateDir,
-                desc = stringResource(R.string.first_run_update_desc),
-                identity = null,
-                onClick = onChooseUpdate,
-            )
+            // Update folder is advanced/optional and lives in Settings → Storage.
+            // Keeping it off the first-run screen makes the initial flow one tap.
             Spacer(Modifier.height(12.dp))
             ConfirmButton(enabled = ready, onConfirm = onConfirm)
             if (!ready) {

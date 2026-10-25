@@ -3,6 +3,7 @@ package com.gow3.android.data.model
 import com.gow3.android.data.CatalogProblem
 import com.gow3.android.data.PatchCatalog
 import com.gow3.android.data.PatchCatalogException
+import com.gow3.android.data.model.GameSfo
 import com.gow3.android.R
 
 import java.io.File
@@ -39,10 +40,30 @@ internal object GameIdentity {
      */
     fun load(gameDir: String?, updateDir: String?, open: (String) -> InputStream): GameIdentityState {
         if (gameDir.isNullOrBlank()) return GameIdentityState.Failed(CatalogProblem.NO_GAME)
+        val game = File(gameDir)
         val update = updateDir?.takeIf { it.isNotBlank() }?.let(::File)
         return try {
-            GameIdentityState.Ready(PatchCatalog.load(File(gameDir), update, open))
+            GameIdentityState.Ready(PatchCatalog.load(game, update, open))
         } catch (e: PatchCatalogException) {
+            // The update folder is optional. A stale GOW3 update folder must not
+            // block a valid JoJo base folder: retry against the base alone.
+            if (e.problem == CatalogProblem.INVALID_UPDATE && update != null) {
+                try {
+                    return GameIdentityState.Ready(PatchCatalog.load(game, null, open))
+                } catch (_: Exception) {
+                    // fall through to the original failure
+                }
+            }
+            // Patches are optional too. If the game itself is valid but its
+            // version has no catalog, allow Play with an empty patch list.
+            if (e.problem == CatalogProblem.UNSUPPORTED || e.problem == CatalogProblem.VERSION) {
+                val sfo = GameSfo.read(File(game, "sce_sys/param.sfo"))
+                val title = sfo?.get("TITLE_ID")
+                val version = sfo?.get("APP_VER")
+                if (!title.isNullOrBlank() && !version.isNullOrBlank() && File(game, "eboot.bin").isFile) {
+                    return GameIdentityState.Ready(PatchCatalog(title, version, emptyList()))
+                }
+            }
             GameIdentityState.Failed(e.problem)
         } catch (_: Exception) {
             GameIdentityState.Failed(CatalogProblem.READ_FAILED)
