@@ -34,8 +34,8 @@ jobs:
         with:
           packages: >-
             platform-tools
-            platforms;android-37
-            build-tools;35.0.0
+            platforms;android-36
+            build-tools;36.0.0
             ndk;29.0.14206865
 
       - name: Install host build tools
@@ -60,7 +60,7 @@ jobs:
           export GOW3_ARM64_HEADERS="$CONDA_PREFIX"
           export GOW3_NDK="$ANDROID_HOME/ndk/29.0.14206865"
           export GOW3_ANDROID_SDK="$ANDROID_HOME"
-          export GOW3_BUILD_TOOLS=35.0.0
+          export GOW3_BUILD_TOOLS=36.0.0
           export GOW3_JOBS="$(nproc)"
           bash tools/android/build_bionic_deps.sh
           bash tools/android/build_bionic.sh

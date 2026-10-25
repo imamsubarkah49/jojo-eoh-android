@@ -15,7 +15,7 @@ val steamAvailable = steamLibs.resolve("jars.txt").isFile
 android {
     namespace = "com.gow3.android"
     compileSdk {
-        version = release(37)
+        version = release(36)
     }
 
     defaultConfig {
