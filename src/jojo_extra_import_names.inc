@@ -28,3 +28,4 @@
 {"+RhzSuuXwxo#libSceNpTus","sceNpTusSetDataVUser"},
 {"c6aYoa47YgI#libSceNpTus","sceNpTusSetMultiSlotVariable"},
 {"1Cz0hTJFyh4#libSceNpTus","sceNpTusSetMultiSlotVariableVUser"},
+{"SsC-m-S9JTA#libSceSystemService","sceSystemServiceParamGetString"},

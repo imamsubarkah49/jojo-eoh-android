@@ -92,6 +92,20 @@ static ABI int32_t system_param(int32_t id,int32_t *value) {
     }
     return 0;
 }
+/* sceSystemServiceParamGetString: the CyberConnect2 boot path asks for the
+ * system name (id 6). A null/empty answer is treated as an unsupported
+ * platform, so return the values a retail PS4 reports. */
+static ABI int32_t system_param_string(int32_t id,char *out,uint64_t size) {
+    if (!out || !size) return SYSTEM_PARAMETER;
+    const char *value="";
+    switch (id) {
+    case 1: value="en-US"; break;   /* language */
+    case 6: value="PS4"; break;     /* system name */
+    default: break;
+    }
+    snprintf(out,size,"%s",value);
+    return 0;
+}
 static ABI int32_t system_status(unsigned char *status) {
     if (!status) return SYSTEM_PARAMETER;
     memset(status,0,12); /* event_num=0, no overlay, foreground, normal CPU mode */
@@ -831,7 +845,8 @@ static const RuntimeExport exports[]={
     {"sceUserServiceInitialize",user_initialize}, {"sceUserServiceTerminate",user_terminate},
     {"sceUserServiceGetInitialUser",user_initial}, {"sceUserServiceGetLoginUserIdList",user_list},
     {"sceUserServiceGetUserName",user_name}, {"sceUserServiceGetEvent",user_event},
-    {"sceSystemServiceParamGetInt",system_param}, {"sceSystemServiceGetStatus",system_status},
+    {"sceSystemServiceParamGetInt",system_param}, {"sceSystemServiceParamGetString",system_param_string},
+    {"sceSystemServiceGetStatus",system_status},
     {"sceSystemServiceReceiveEvent",system_event}, {"sceSystemServiceHideSplashScreen",hide_splash},
     {"sceSystemServiceLaunchWebBrowser",launch_browser},
     {"sceSystemServiceGetDisplaySafeAreaInfo",safe_area}, {"sceSystemServiceDisableMusicPlayer",disable_music_player},
