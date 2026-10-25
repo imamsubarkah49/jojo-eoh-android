@@ -104,6 +104,20 @@ android {
     }
 }
 
+// AndroidX 2026.02 core/lifecycle releases require compileSdk 37, which is not
+// in the stable SDK channel yet. Keep the launcher on the newest releases that
+// still compile against API 36 instead of forcing a preview platform.
+configurations.configureEach {
+    resolutionStrategy.eachDependency {
+        if (requested.group == "androidx.core" && requested.name.startsWith("core")) {
+            useVersion("1.18.0")
+        }
+        if (requested.group == "androidx.lifecycle") {
+            useVersion("2.9.4")
+        }
+    }
+}
+
 tasks.withType<org.gradle.api.tasks.testing.Test>().configureEach {
     systemProperty("gow3.patchCatalogDir", rootProject.file("../patches").absolutePath)
 }
