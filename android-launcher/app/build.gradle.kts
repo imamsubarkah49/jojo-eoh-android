@@ -109,7 +109,7 @@ android {
 // still compile against API 36 instead of forcing a preview platform.
 configurations.configureEach {
     resolutionStrategy.eachDependency {
-        if (requested.group == "androidx.core" && requested.name.startsWith("core")) {
+        if (requested.group == "androidx.core" && requested.name in setOf("core", "core-ktx")) {
             useVersion("1.18.0")
         }
         if (requested.group == "androidx.lifecycle") {
