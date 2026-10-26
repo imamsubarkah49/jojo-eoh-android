@@ -441,6 +441,43 @@ static int32_t map_direct_locked(void **out, uint64_t size, int prot, int flags,
     if (!result) ++maps;
     return result;
 }
+typedef struct { uint64_t start, end; } UsedRange;
+static int used_range_cmp(const void *a,const void *b) {
+    const UsedRange *x=a,*y=b;
+    return x->start<y->start ? -1 : x->start>y->start ? 1 : 0;
+}
+/* sceKernelAvailableDirectMemorySize: largest free gap in [low, high). */
+static ABI int32_t direct_available(uint64_t low,uint64_t high,uint64_t alignment,
+                                    uint64_t *physical,uint64_t *size) {
+    if (!physical || !size) return INVALID;
+    if (!alignment) alignment=PAGE;
+    if (!valid_alignment(alignment)) return INVALID;
+    if (!high || high>POOL_SIZE) high=POOL_SIZE;
+    if (low>=high) return NO_SPACE;
+    UsedRange used[LIMIT];
+    int count=0;
+    write_lock();
+    for (int i=0;i<LIMIT;++i) if (blocks[i].used) {
+        uint64_t a=blocks[i].start>low ? blocks[i].start : low;
+        uint64_t b=blocks[i].start+blocks[i].size<high ? blocks[i].start+blocks[i].size : high;
+        if (a<b) used[count++]=(UsedRange){a,b};
+    }
+    write_unlock();
+    qsort(used,(size_t)count,sizeof(*used),used_range_cmp);
+    uint64_t cursor=low, best_start=0, best_size=0;
+    for (int i=0;i<=count;++i) {
+        uint64_t end=i<count ? used[i].start : high;
+        if (end>cursor) {
+            uint64_t start=align_up(cursor,alignment);
+            if (start<end && end-start>best_size) { best_start=start; best_size=end-start; }
+        }
+        if (i<count && used[i].end>cursor) cursor=used[i].end;
+    }
+    if (!best_size) return NO_SPACE;
+    *physical=best_start;
+    *size=best_size;
+    return 0;
+}
 static ABI int32_t direct_map(void **out, uint64_t size, int prot, int flags, int64_t physical, uint64_t alignment) {
     write_lock();
     int32_t result=map_direct_locked(out,size,prot,flags,physical,alignment);
@@ -646,6 +683,7 @@ static ABI int32_t batch_map(BatchEntry *entries, int count, int *processed) {
 static const RuntimeExport exports[]={
     {"mmap",posix_mmap}, {"msync",posix_msync},
     {"sceKernelGetDirectMemorySize",direct_size}, {"sceKernelAllocateDirectMemory",direct_allocate},
+    {"sceKernelAvailableDirectMemorySize",direct_available},
     {"sceKernelMapDirectMemory",direct_map}, {"sceKernelMapNamedDirectMemory",direct_map_named},
     {"sceKernelReleaseDirectMemory",direct_release}, {"sceKernelMunmap",direct_unmap}, {"munmap",direct_unmap},
     {"sceKernelMapFlexibleMemory",map_flexible}, {"sceKernelMapNamedFlexibleMemory",map_flexible_named},
@@ -661,6 +699,7 @@ uintptr_t runtime_memory_resolve(const char *name) {
     if (!strcmp(name, "L-Q3LEjIbgA#libkernel")) return (uintptr_t)direct_map;
     if (!strcmp(name, "MBuItvba6z8#libkernel")) return (uintptr_t)direct_release;
     if (!strcmp(name, "cQke9UuBQOk#libkernel")) return (uintptr_t)direct_unmap;
+    if (!strcmp(name, "C0f7TJcbfac#libkernel")) return (uintptr_t)direct_available;
     return RUNTIME_LOOKUP(exports,name);
 }
 /* Host-owned memory the guest can see (image, stacks, trampolines) lives in
