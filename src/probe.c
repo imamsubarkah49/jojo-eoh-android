@@ -257,6 +257,19 @@ static void fault(int sig, siginfo_t *info, void *context) {
     else
         snprintf(line, sizeof(line), "Fault (signal %d) at RIP %p, address %p\n", sig, (void *)rip, info->si_addr);
     { ssize_t written_=write(2, line, strlen(line)); (void)written_; }
+    if (in_guest == GUEST_CPU_IN_GUEST) {
+        snprintf(line, sizeof(line),
+                 "  rip=%llx rsp=%llx rbp=%llx rax=%llx rbx=%llx rcx=%llx rdx=%llx\n"
+                 "  rsi=%llx rdi=%llx r8=%llx r9=%llx r10=%llx r11=%llx r12=%llx\n",
+                 (unsigned long long)regs.rip, (unsigned long long)regs.gpr[GUEST_RSP],
+                 (unsigned long long)regs.gpr[GUEST_RBP], (unsigned long long)regs.gpr[GUEST_RAX],
+                 (unsigned long long)regs.gpr[GUEST_RBX], (unsigned long long)regs.gpr[GUEST_RCX],
+                 (unsigned long long)regs.gpr[GUEST_RDX], (unsigned long long)regs.gpr[GUEST_RSI],
+                 (unsigned long long)regs.gpr[GUEST_RDI], (unsigned long long)regs.gpr[GUEST_R8],
+                 (unsigned long long)regs.gpr[GUEST_R9], (unsigned long long)regs.gpr[GUEST_R10],
+                 (unsigned long long)regs.gpr[GUEST_R11], (unsigned long long)regs.gpr[GUEST_R12]);
+        { ssize_t written_=write(2, line, strlen(line)); (void)written_; }
+    }
     if (gpu_enabled) gow3gpu_dump_guest_writes(context);
     /* Host call chain (frames with unwind info; guest frames end it). */
     void *frames[32];
